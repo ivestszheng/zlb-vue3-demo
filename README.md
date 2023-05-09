@@ -1,24 +1,19 @@
-# zlb-vue3-demo
+# 浙里办 h5 应用中可能需要用到的基础能力实现
 
-## Project setup
+## 依赖安装
+
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 开发环境运行
+
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+### 模拟 IRS 的测试环境与线上环境
 
-### Lints and fixes files
 ```
-yarn lint
+npx vue-cli-service serve --mode production
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

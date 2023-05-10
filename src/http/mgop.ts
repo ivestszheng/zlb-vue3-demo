@@ -7,9 +7,16 @@ import RequestError from "@/errors/RequestError";
 const { getUuid } = useHandleData();
 const { add, remove, getIndex } = useCostomApis();
 
+/**
+ * 使用 mgop 发送请求，建议保留打印的日志，一些终端不会打印 mgop 相关日志，不利于 debug
+ * @param api 调用的接口路径
+ * @param type 支持 POST 和 GET
+ * @param config
+ */
 function useMgop(api, type = "GET", config): Promise<RequestResponse> {
   const userStore = useUserStore();
   // api是在开发者平台中注册的rpc的api名称，一个接口一个
+  console.info("mgop request send", api, "入参", config?.data);
   return new Promise((resolve, reject) => {
     // 生成 uuid 并将其加入队列
     const uuid = getUuid();
@@ -26,10 +33,12 @@ function useMgop(api, type = "GET", config): Promise<RequestResponse> {
       },
       onSuccess: async (res) => {
         if (!checkIsInQueue(uuid)) {
+          console.info("mgop canceled", api);
           return reject(handleOnCanceled(api));
         }
         try {
           const result = await handleOnSuccess(res, { api });
+          console.info("mgop success", api, result);
           return resolve(result);
         } catch (error) {
           return reject(error);
@@ -37,11 +46,13 @@ function useMgop(api, type = "GET", config): Promise<RequestResponse> {
       },
       onFail: async (error) => {
         if (!checkIsInQueue(uuid)) {
+          console.info("mgop canceled", api);
           return reject(handleOnCanceled(api));
         }
         try {
           await handleOnFailed(error, { api });
         } catch (error) {
+          console.error("mgop failed", api, error);
           reject(error);
         }
       },

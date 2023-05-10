@@ -1,4 +1,4 @@
-import useMgop from "./useMgop";
+import mgop from "./mgop";
 import axiosInstance from "./axiosInstance";
 
 function request(
@@ -21,7 +21,7 @@ function request(
       { ...config }
     );
   } else {
-    return useMgop(apis.prod, type, config);
+    return mgop(apis.prod, type, config);
   }
 }
 

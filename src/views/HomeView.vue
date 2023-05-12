@@ -27,6 +27,16 @@
         在IRS上的测试环境与线上环境发送请求时需要修改 env 中的
         VUE_APP_ZLB_APP_KEY
       </p>
+      <p>
+        由于后端响应失败时，浙里办会抛出自己的异常信息，导致无法拿到后端抛出的异常信息。所以与后端约定返回的数据结构永远包含
+        data,code,messge 三个字段，http 状态码永远为
+        200，真实的响应状态与信息通过响应体中的 code 与 message 来判断。
+      </p>
+      <p>
+        在 mgop 的回调中，也是针对这一结构做了特殊处理。如果对 mgop
+        还不熟悉，刚刚开始联调，可以修改 ts 中的 RequestResponse 结构与修改 mgop
+        中的处理逻辑，直接 resolve 需要的数据。
+      </p>
       <button @click="testGet(1)">发送GET请求</button>
       <button @click="testPost({ hellow: 123 })">发送POST请求</button>
     </div>
